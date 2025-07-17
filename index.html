@@ -4,34 +4,84 @@
 <head>
   <meta charset="UTF-8" />
   <title>Buscador de Ejercicios de Física</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       padding: 2em;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
     }
 
-    label,
+    h1 {
+      text-align: center;
+      margin-bottom: 1em;
+      color: #2c3e50;
+    }
+
+    .filtros {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1em;
+      margin-bottom: 1.5em;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.25em;
+      display: block;
+    }
+
     select,
     input {
-      display: block;
-      margin: 0.5em 0;
+      width: 100%;
+      padding: 0.4em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 0.6em 1.2em;
+      margin-top: 1em;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .resultado {
+      margin-top: 2em;
+    }
+
+    .item {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1em;
+      margin-bottom: 2em;
     }
 
     iframe {
       width: 100%;
-      height: 400px;
-      border: 1px solid #ccc;
-      margin-top: 1em;
-    }
-
-    .resultado {
-      margin-top: 1em;
+      height: 300px;
+      border: none;
       border-top: 1px solid #ccc;
-      padding-top: 1em;
+      margin-top: 1em;
     }
 
-    .item {
-      margin-bottom: 2em;
+    @media (max-width: 600px) {
+      iframe {
+        height: 200px;
+      }
     }
   </style>
 </head>
@@ -39,52 +89,72 @@
 <body>
   <h1>Buscador de Ejercicios de Física</h1>
 
-  <label for="palabraClave">Búsqueda por palabra clave:</label>
-  <input type="text" id="palabraClave" />
+  <div class="filtros">
+    <div>
+      <label for="palabraClave">Palabra clave:</label>
+      <input type="text" id="palabraClave" />
+    </div>
 
-  <label for="tipo">Tipo:</label>
-  <select id="tipo">
-    <option value="">(cualquiera)</option>
-    <option value="Planificación">Planificación</option>
-    <option value="Guía">Guía</option>
-    <option value="Ejercicios">Ejercicios</option>
-  </select>
+    <div>
+      <label for="tipo">Tipo:</label>
+      <select id="tipo">
+        <option value="">(cualquiera)</option>
+        <option value="Planificación">Planificación</option>
+        <option value="Guía">Guía</option>
+        <option value="Ejercicios">Ejercicios</option>
+      </select>
+    </div>
 
-  <label for="nivel">Nivel:</label>
-  <select id="nivel">
-    <option value="">(cualquiera)</option>
-    <option value="1° medio">1° medio</option>
-    <option value="2° medio">2° medio</option>
-    <option value="Electivo">Electivo</option>
-    <option value="PAES">PAES</option>
-  </select>
+    <div>
+      <label for="nivel">Nivel:</label>
+      <select id="nivel">
+        <option value="">(cualquiera)</option>
+        <option value="1° medio">1° medio</option>
+        <option value="2° medio">2° medio</option>
+        <option value="2° medio">3° medio</option>
+        <option value="2° medio">4° medio</option>
+        <option value="Electivo">Electivo</option>
+        <option value="PAES">PAES</option>
+      </select>
+    </div>
 
-  <label for="tema">Tema:</label>
-  <select id="tema">
-    <option value="">(cualquiera)</option>
-    <option value="Sonido">Sonido</option>
-    <option value="Ondas">Ondas</option>
-    <option value="MRU">MRU</option>
-    <option value="MRUA">MRUA</option>
-    <option value="Método Científico">Método Científico</option>
-  </select>
+    <div>
+      <label for="tema">Tema:</label>
+      <select id="tema">
+        <option value="">(cualquiera)</option>
+        <option value="Fuerza">Fuerza</option>
+        <option value="Luz">Luz</option>
+        <option value="MRU">MRU</option>
+        <option value="MRUA">MRUA</option>
+        <option value="Método Científico">Método Científico</option>
+        <option value="Ondas">Ondas</option>
+        <option value="Sonido">Sonido</option>
+      </select>
+    </div>
 
-  <label for="tipoEjercicio">Tipo de ejercicio:</label>
-  <select id="tipoEjercicio">
-    <option value="">(cualquiera)</option>
-    <option value="Alternativas">Alternativas</option>
-    <option value="Desarrollo">Desarrollo</option>
-  </select>
+    <div>
+      <label for="tipoEjercicio">Tipo de ejercicio:</label>
+      <select id="tipoEjercicio">
+        <option value="">(cualquiera)</option>
+        <option value="Alternativas">Alternativas</option>
+        <option value="Desarrollo">Desarrollo</option>
+      </select>
+    </div>
 
-  <label for="dificultad">Dificultad:</label>
-  <select id="dificultad">
-    <option value="">(cualquiera)</option>
-    <option value="Elemental">Elemental</option>
-    <option value="Medio">Medio</option>
-    <option value="Avanzado">Avanzado</option>
-  </select>
+    <div>
+      <label for="dificultad">Dificultad:</label>
+      <select id="dificultad">
+        <option value="">(cualquiera)</option>
+        <option value="Elemental">Elemental</option>
+        <option value="Medio">Medio</option>
+        <option value="Avanzado">Avanzado</option>
+      </select>
+    </div>
+  </div>
 
-  <button onclick="filtrarEjercicios()">Buscar</button>
+  <div style="text-align:center;">
+    <button onclick="filtrarEjercicios()">🔍 Buscar ejercicios</button>
+  </div>
 
   <div id="resultados" class="resultado"></div>
 
@@ -157,7 +227,7 @@
         div.className = "item";
         div.innerHTML = `
           <strong>${ej.titulo}</strong><br>
-          Tipo: ${ej.tipo} | Nivel: ${ej.nivel} | Tema: ${ej.tema} | Tipo Ejercicio: ${ej.tipoEjercicio} | Dificultad: ${ej.dificultad}<br>
+          <small>Tipo: ${ej.tipo} | Nivel: ${ej.nivel} | Tema: ${ej.tema} | Tipo Ejercicio: ${ej.tipoEjercicio} | Dificultad: ${ej.dificultad}</small>
           ${ej.id ? `<iframe src="https://docs.google.com/document/d/${ej.id}/preview"></iframe>` : ''}
         `;
         contenedor.appendChild(div);
