@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscador de Ejercicios de Física</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    select, input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .results iframe {
+      width: 100%;
+      height: 400px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Buscador de Ejercicios de Física</h1>
+  <div class="filters">
+    <input type="text" id="searchText" placeholder="Buscar por palabra clave...">
+    <select id="nivel">
+      <option value="">Todos los niveles</option>
+      <option>1° medio</option>
+      <option>2° medio</option>
+      <option>3° medio</option>
+      <option>4° medio</option>
+      <option>PAES</option>
+    </select>
+    <select id="tema">
+      <option value="">Todos los temas</option>
+      <option>Sonido</option>
+      <option>Cinemática</option>
+      <option>Electricidad</option>
+      <option>Óptica</option>
+      <!-- Agrega más temas -->
+    </select>
+    <select id="tipo">
+      <option value="">Todos los tipos</option>
+      <option>Alternativa</option>
+      <option>Desarrollo</option>
+    </select>
+    <select id="dificultad">
+      <option value="">Todas las dificultades</option>
+      <option>Fácil</option>
+      <option>Media</option>
+      <option>Alta</option>
+    </select>
+    <button onclick="filtrarEjercicios()">Buscar</button>
+  </div>
+
+  <div class="results" id="resultados">
+    <!-- Aquí se insertarán los ejercicios -->
+  </div>
+
+  <script>
+    let ejercicios = [];
+
+    // Carga el archivo CSV desde la carpeta del proyecto (debes subirlo allí)
+    Papa.parse("ejercicios.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        ejercicios = results.data;
+        filtrarEjercicios();
+      }
+    });
+
+    function filtrarEjercicios() {
+      const search = document.getElementById("searchText").value.toLowerCase();
+      const nivel = document.getElementById("nivel").value;
+      const tema = document.getElementById("tema").value;
+      const tipo = document.getElementById("tipo").value;
+      const dificultad = document.getElementById("dificultad").value;
+
+      const filtrados = ejercicios.filter(ej => {
+        return (!nivel || ej.Nivel === nivel) &&
+               (!tema || ej.Tema === tema) &&
+               (!tipo || ej.Tipo === tipo) &&
+               (!dificultad || ej.Dificultad === dificultad) &&
+               (!search || (ej.Título && ej.Título.toLowerCase().includes(search)));
+      });
+
+      mostrarEjercicios(filtrados);
+    }
+
+    function mostrarEjercicios(lista) {
+      const contenedor = document.getElementById("resultados");
+      contenedor.innerHTML = "";
+      lista.forEach(ej => {
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://docs.google.com/document/d/${ej.ID}/preview`;
+        contenedor.appendChild(iframe);
+      });
+    }
+  </script>
+</body>
+</html>
